@@ -65,3 +65,8 @@ typings/
 
 # Emacs auto-save file
 \#*#
+
+.env
+.env.development
+.env.production
+

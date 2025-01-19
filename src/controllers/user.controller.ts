@@ -4,6 +4,7 @@ import {inject} from '@loopback/core';
 import {Count, CountSchema, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {del, get, getModelSchemaRef, param, patch, post, put, requestBody, response} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
+import _ from 'lodash';
 import {PasswordHasherBindings, TokenServiceBindings, UserServiceBindings} from '../keys';
 import {User} from '../models';
 import {Credentials, UserRepository} from '../repositories';
@@ -92,11 +93,11 @@ export class UserController {
   async login(
     @requestBody()
     credentials: Credentials,
-  ): Promise<{token: string; user: User}> {
+  ): Promise<{token: string; user: Omit<User, 'Password'>}> {
     const user = await this.userService.verifyCredentials(credentials);
     const userProfile = this.userService.convertToUserProfile(user);
     const token = await this.jwtService.generateToken(userProfile);
-    return {token, user};
+    return {token, user: _.omit(user, 'password')};
   }
 
   // Logout function
@@ -142,6 +143,7 @@ export class UserController {
     return this.userRepository.create(user);
   }
 
+  @authenticate('jwt')
   @get('/users/count')
   @response(200, {
     description: 'User model count',
@@ -151,6 +153,7 @@ export class UserController {
     return this.userRepository.count(where);
   }
 
+  @authenticate('jwt')
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',
@@ -167,6 +170,7 @@ export class UserController {
     return this.userRepository.find(filter);
   }
 
+  @authenticate('jwt')
   @patch('/users')
   @response(200, {
     description: 'User PATCH success count',
@@ -186,6 +190,7 @@ export class UserController {
     return this.userRepository.updateAll(user, where);
   }
 
+  @authenticate('jwt')
   @get('/users/{id}')
   @response(200, {
     description: 'User model instance',
@@ -202,6 +207,7 @@ export class UserController {
     return this.userRepository.findById(id, filter);
   }
 
+  @authenticate('jwt')
   @patch('/users/{id}')
   @response(204, {
     description: 'User PATCH success',
@@ -220,6 +226,7 @@ export class UserController {
     await this.userRepository.updateById(id, user);
   }
 
+  @authenticate('jwt')
   @put('/users/{id}')
   @response(204, {
     description: 'User PUT success',
@@ -228,6 +235,7 @@ export class UserController {
     await this.userRepository.replaceById(id, user);
   }
 
+  @authenticate('jwt')
   @del('/users/{id}')
   @response(204, {
     description: 'User DELETE success',

@@ -17,6 +17,7 @@ export {ApplicationConfig};
 export class DevApiApplication extends BootMixin(ServiceMixin(RepositoryMixin(RestApplication))) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+    require('dotenv').config();
 
     // Set up the custom sequence
     this.sequence(MySequence);

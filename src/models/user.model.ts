@@ -48,6 +48,13 @@ export class User extends Entity {
   @property({
     type: 'string',
     required: true,
+    hidden: true,
+    jsonSchema: {
+      minLength: 8,
+      errorMessage: {
+        minLength: 'Password is too short',
+      },
+    },
   })
   password: string;
 
