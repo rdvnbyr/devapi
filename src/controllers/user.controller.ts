@@ -2,7 +2,7 @@ import {authenticate, AuthenticationBindings} from '@loopback/authentication';
 import {OPERATION_SECURITY_SPEC} from '@loopback/authentication-jwt';
 import {inject} from '@loopback/core';
 import {Count, CountSchema, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
-import {del, get, getModelSchemaRef, param, patch, post, put, requestBody, response} from '@loopback/rest';
+import {del, get, getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody, response} from '@loopback/rest';
 import {UserProfile} from '@loopback/security';
 import _ from 'lodash';
 import {PasswordHasherBindings, TokenServiceBindings, UserServiceBindings} from '../keys';
@@ -94,6 +94,9 @@ export class UserController {
     @requestBody()
     credentials: Credentials,
   ): Promise<{token: string; user: Omit<User, 'Password'>}> {
+    if (!credentials.email || !credentials.password) {
+      throw new HttpErrors.Unauthorized('Error: email or password is null');
+    }
     const user = await this.userService.verifyCredentials(credentials);
     const userProfile = this.userService.convertToUserProfile(user);
     const token = await this.jwtService.generateToken(userProfile);

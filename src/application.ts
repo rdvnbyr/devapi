@@ -1,5 +1,5 @@
 import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
-import {JWTAuthenticationStrategy, SECURITY_SCHEME_SPEC} from '@loopback/authentication-jwt';
+import {SECURITY_SCHEME_SPEC} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -8,9 +8,9 @@ import {RestExplorerBindings, RestExplorerComponent} from '@loopback/rest-explor
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {PasswordHasherBindings, TokenServiceBindings, TokenServiceConstants, UserServiceBindings} from './keys';
-import {MySequence} from './sequence';
 import {JWTService, MyUserService} from './services';
 import {BcryptHasher} from './services/hash-password.service';
+import {JWTAuthenticationStrategy} from './strategies/auth-strategy';
 
 export {ApplicationConfig};
 
@@ -20,7 +20,7 @@ export class DevApiApplication extends BootMixin(ServiceMixin(RepositoryMixin(Re
     require('dotenv').config();
 
     // Set up the custom sequence
-    this.sequence(MySequence);
+    // this.sequence(MySequence);
 
     // setup binding
     this.setupBindings();

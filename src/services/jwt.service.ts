@@ -32,8 +32,8 @@ export class JWTService {
     try {
       const decodedToken = await verifyAsync(token, this.jwtSecret);
       userProfile = Object.assign(
-        {[securityId]: '', email: '', id: ''},
-        {[securityId]: decodedToken.id, email: decodedToken.email, id: decodedToken.id},
+        {[securityId]: '', email: '', id: '', name: ''},
+        {[securityId]: decodedToken.id, email: decodedToken.email, id: decodedToken.id, name: ''},
       );
       return userProfile;
     } catch (error) {

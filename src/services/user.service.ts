@@ -36,6 +36,7 @@ export class MyUserService implements UserService<User, Credentials> {
       [securityId]: user.id!.toString(),
       email: user.email,
       id: user.id,
+      name: '',
     };
     return userProfile;
   }
