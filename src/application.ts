@@ -34,6 +34,9 @@ export class DevApiApplication extends BootMixin(ServiceMixin(RepositoryMixin(Re
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
+    // set up containers for image serving
+    this.static('/images', path.join(__dirname, '../containers/images'));
+
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
       path: '/explorer',

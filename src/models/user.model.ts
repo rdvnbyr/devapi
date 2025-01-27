@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, referencesMany} from '@loopback/repository';
+import {Places} from './places.model';
 
 @model({settings: {strict: false}})
 export class User extends Entity {
@@ -84,6 +85,8 @@ export class User extends Entity {
   })
   updated_at?: string;
 
+  @referencesMany(() => Places, {name: 'places'})
+  placesIds: string[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

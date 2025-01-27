@@ -70,3 +70,6 @@ typings/
 .env.development
 .env.production
 
+# storage for the database
+/storage
+/containers
